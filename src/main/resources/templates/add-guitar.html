@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <!--<link href="/static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.css}"/>-->
+    <!--<script src="/static/js/bootstrap.js" type="application/javascript"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/esm/popper-utils.js"></script>-->
+
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/jquery-migrate/jquery-migrate.min.js"></script>
+    <script src="/assets/vendor/popper.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Shop</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarsExampleDefault">
+            <ul class="navbar-nav m-auto">
+                <li class="nav-item m-auto">
+                    <a class="nav-link active" href="/index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="//categories">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/guitars">Guitars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Cart <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/craftsmen">Craftsmen</a>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading"><a href="/guitars/add-new">Guitars add new</a></h1>
+    </div>
+</section>
+
+
+<!--<div th:if="${param.error}">
+    <h2 class="text-center text-danger" th:text="${param.error}"></h2>
+</div>-->
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+
+            <form action="/guitars"
+                  method="post"
+                  enctype="multipart/form-data"
+                  th:object="${guitar}" >
+                <input type="text" hidden="hidden" name="id" th:value="${guitar.getId()}">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${guitar.getName()}"
+                           id="name"
+                           name="name"
+                           th:field="*{name}"
+                           required
+                           placeholder="Enter name">
+                </div>
+
+                <div class="form-group">
+                    <h4 class="text-danger"
+                        th:if="${#fields.hasErrors('samples')}"
+                        th:errors="*{samples}">
+                    </h4>
+                    <label for="quantity">Samples number</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${guitar.getSamples()}"
+                           id="quantity"
+                           th:field="*{samples}"
+                           name="samples"
+                           placeholder="Quantity">
+                </div>
+                <div class="form-group">
+                    <h4 class="text-danger"
+                        th:if="${#fields.hasErrors('price')}"
+                        th:errors="*{price}">
+
+                    </h4>
+                    <label for="price">Price</label>
+                    <input type="text"
+                           class="form-control"
+                           th:value="${guitar.getPrice()}"
+                           id="price"
+                           th:field="*{price}"
+                           name="price"
+                           placeholder="Price">
+                </div>
+
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select th:field="*{category.id}" class="form-control">
+                        <option
+                                th:each="cat : ${categories}"
+                                th:value="${cat.getId()}"
+                                th:text="${cat.getName()}"
+                                th:selected="${guitar.getCategory() != null && guitar.getCategory().getId() == cat.getId()}"
+                        >
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Craftsmen</label>
+                    <select th:field="*{craftsmen}" name="craftsmen" class="form-control"
+                            multiple="multiple">
+                        <option
+                                th:selected="${guitar.getCraftsmen() != null && guitar.getCraftsmen().contains(craftsman)}"
+                                th:each="craftsman : ${craftsmen}"
+                                th:value="${craftsman.getId()}"
+                                th:text="${craftsman.getName()}"
+
+                        >
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input id="image" name="image" class="form-control" type="file"/>
+                </div>
+                </br>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-primary" href="/guitars">Back</a>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="text-black-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-lg-4 col-xl-3">
+                <h5>About</h5>
+                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                <p class="mb-0">
+                    Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
+                    impression.
+                </p>
+            </div>
+
+
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
+                <h5>Informations</h5>
+                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                <ul class="list-unstyled">
+                    <li><a href="">Link 1</a></li>
+                    <li><a href="">Link 2</a></li>
+                    <li><a href="">Link 3</a></li>
+                    <li><a href="">Link 4</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto">
+                <h5>Others links</h5>
+                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                <ul class="list-unstyled">
+                    <li><a href="">Link 1</a></li>
+                    <li><a href="">Link 2</a></li>
+                    <li><a href="">Link 3</a></li>
+                    <li><a href="">Link 4</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4 col-lg-3 col-xl-3">
+                <h5>Contact</h5>
+                <hr class="bg-white mb-2 mt-0 d-inline-block mx-auto w-25">
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-home mr-2"></i> My company</li>
+                    <li><i class="fa fa-envelope mr-2"></i> email@example.com</li>
+                    <li><i class="fa fa-phone mr-2"></i> + 33 12 14 15 16</li>
+                    <li><i class="fa fa-print mr-2"></i> + 33 12 14 15 16</li>
+                </ul>
+            </div>
+            <div class="col-12 copyright mt-3">
+                <p class="float-left">
+                    <a href="#">Back to top</a>
+                </p>
+                <p class="text-right text-muted">created with <i class="fa fa-heart"></i> by <a
+                        href="https://t-php.fr/43-theme-ecommerce-bootstrap-4.html"><i>t-php</i></a> |
+                    <span>v. 1.0</span></p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+
+
+
